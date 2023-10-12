@@ -35,3 +35,12 @@ CREATE TABLE contracts (
 
 DESC contracts;
 
+
+CREATE TABLE projects (
+    project_code NUMBER(4),
+    project_name VARCHAR(50),
+    project_desc VARCHAR(50),
+    project_start_date DATE,
+    project_end_date DATE
+    
+);
