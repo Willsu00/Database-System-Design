@@ -20,5 +20,18 @@ CREATE TABLE contractor_companies (
 DESC contractor_companies;
 
 CREATE TABLE contracts (
-    contract_name VARCHAR2(50),
+    contract_number_PK NUMBER(4)NOT NULL,
+    cc_name_FK VARCHAR2(50),
+    contract_name VARCHAR2(50) NOT NULL,
+    contract_desc VARCHAR(50),
+    contract_est_cost NUMBER(10,20),
+    contract_actual_cost NUMBER(10,20),
+    contract_start_date DATE,
+    contract_end_date DATE,
+    CONSTRAINT contract_number_primary PRIMARY KEY(contract_number_PK),
+    CONSTRAINT contract_cc_name FOREIGN KEY (cc_name_FK)
+        REFERENCES contractor_companies (cc_name_PK)
 );
+
+DESC contracts;
+
