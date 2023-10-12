@@ -20,5 +20,5 @@ CREATE TABLE contractor_companies (
 DESC contractor_companies;
 
 CREATE TABLE contracts (
-    contract_name
+    contract_name VARCHAR2(50),
 );
