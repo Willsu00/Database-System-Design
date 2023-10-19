@@ -72,3 +72,18 @@ CREATE TABLE staff (
 );
 
 DESC staff;
+
+CREATE TABLE staff_roles (
+    role_name_PK VARCHAR2(50) NOT NULL,
+    employee_id_FK NUMBER(4) NOT NULL,
+    role_desc VARCHAR2 (50),
+    role_start_date DATE,
+    role_end_date DATE,
+    CONSTRAINT role_name_primary PRIMARY KEY(role_name_PK),
+    CONSTRAINT employee_id_role_foreign FOREIGN KEY(employee_id_FK)
+        REFERENCES staff (employee_id_PK)
+);
+
+DESC staff_roles;
+
+
