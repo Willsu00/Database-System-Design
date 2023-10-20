@@ -115,8 +115,6 @@ CREATE TABLE subsections (
 
 DESC subsections;
 
-DESC rlocations;
-
 ------------------INSERT LOCATIONS-------------------
 
 INSERT INTO rlocations VALUES
@@ -220,18 +218,111 @@ INSERT INTO rlocations VALUES
 
 SELECT * FROM rlocations;
 
+COMMIT;    ---- ALWAYS COMMIT AFTER FINISHING TABLE
 
 --------------------INSERT PROJECT-----------------------
 
+
+SELECT * FROM projects;
+DESC projects;
+
 --------------------INSERT ROADS-----------------------
+
+
+SELECT * FROM roads;
 
 --------------------INSERT CONTRACT-----------------------
 
+
+SELECT * FROM contracts;
+
 --------------------INSERT CONTRACT COMPANIES-------------
 
---------------------INSERT EMPLOYEES-----------------------
+INSERT INTO contractor_companies VALUES (
+    'John Smith Ltd',
+    'Churchill Close',
+    54,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Swamy Development',
+    'Junction Road',
+    12,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Enriquez Asphalt Plus',
+    'Sycamore Drive',
+    13,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Astrova',
+    'Manor Drive',
+    44,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Shek Men Co',
+    'Greenfield Road',
+    5,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Impass',
+    'Darnell Road',
+    69,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Terraway',
+    'Queens Street',
+    4,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Vidroad',
+    'This Road',
+    56,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Binaryroute',
+    'Whythead Cresent',
+    8,
+    'AUCKLAND'
+);
+
+INSERT INTO contractor_companies VALUES (
+    'Has Wells Ltd',
+    'Grove Lane',
+    23,
+    'AUCKLAND'
+);
+
+SELECT * FROM contractor_companies;
+
+COMMIT;        ---- ALWAYS COMMIT AFTER FINISHING TABLE
+
+--------------------INSERT STAFF-----------------------
+
+
+SELECT * FROM staff;
 
 --------------------INSERT SUBSECTIONS-----------------------
 
+
+SELECT * FROM subsections;
+
 --------------------INSERT ROLE-----------------------
 
+
+SELECT * FROM staff_roles;
