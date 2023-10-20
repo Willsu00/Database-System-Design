@@ -76,7 +76,7 @@ DESC staff;
 CREATE TABLE staff_roles (
     role_name_PK VARCHAR2(50) NOT NULL,
     employee_id_FK NUMBER(4) NOT NULL,
-    role_desc VARCHAR2 (50),
+    role_desc VARCHAR2(50),
     role_start_date DATE,
     role_end_date DATE,
     CONSTRAINT role_name_primary PRIMARY KEY(role_name_PK),
@@ -86,4 +86,23 @@ CREATE TABLE staff_roles (
 
 DESC staff_roles;
 
+CREATE TABLE roads (
+    road_name_PK VARCHAR2(50) NOT NULL,
+    location_id_FK NUMBER(4) NOT NULL,
+    road_desc VARCHAR2(50),
+    road_category VARCHAR2(50),
+    CONSTRAINT road_name_primary PRIMARY KEY(road_name_PK),
+    CONSTRAINT road_location_id_foreign FOREIGN KEY (location_id_FK)
+        REFERENCES rlocations (location_id_PK)
+);
+
+DESC roads;
+
+CREATE TABLE subsections (
+    road_name_subsection_FK VARCHAR2(50) NOT NULL,
+    CONSTRAINT road_name_sub_foreign FOREIGN KEY (road_name_subsection_FK)
+        REFERENCES roads (road_name_PK)
+);
+
+DESC subsections;
 
