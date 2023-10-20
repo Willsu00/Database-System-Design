@@ -1,13 +1,22 @@
+
+----------------------CREATING TABLES----------------------
+
 CREATE TABLE rlocations (
     location_id_PK NUMBER(4) NOT NULL,
     location_name VARCHAR2(50) NOT NULL,
     location_desc VARCHAR2(50),
-    location_longitude NUMBER(10,20),
-    location_latitude NUMBER(10,20),
+    location_longitude VARCHAR2(50),
+    location_latitude VARCHAR2(50),
     CONSTRAINT location_id_primary PRIMARY KEY (location_id_PK)
 );
 
+ALTER TABLE rlocations
+MODIFY location_latitude VARCHAR2(50)
+MODIFY location_longitude VARCHAR2(50);
+
 DESC rlocations;
+
+
 
 CREATE TABLE contractor_companies (
     cc_name_PK VARCHAR2(50) NOT NULL,
@@ -105,4 +114,124 @@ CREATE TABLE subsections (
 );
 
 DESC subsections;
+
+DESC rlocations;
+
+------------------INSERT LOCATIONS-------------------
+
+INSERT INTO rlocations VALUES
+(
+    2000,
+    'AUCKLAND',
+    'SUBURB',
+    '-36.958742284',
+    '174.915753202233'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2001,
+    'AUCKLAND',
+    'SUBURB',
+    '-36.965746165',
+    '174.911547498514'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2002,
+    'AUCKLAND',
+    'RURAL',
+    '-36.955739122',
+    '174.931667453249'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2003,
+    'AUCKLAND',
+    'SUBURB',
+    '-36.966104329',
+    '174.902754013328'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2003,
+    'AUCKLAND',
+    'SUBURB',
+    '-36.966104329',
+    '174.902754013328'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2004,
+    'AUCKLAND',
+    'RURAL',
+    '-36.954881606',
+    '174.930519501069'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2005,
+    'AUCKLAND',
+    'SUBURB',
+    '-36.962875971',
+    '174.92185021651'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2006,
+    'AUCKLAND',
+    'RURAL',
+    '-36.952766157',
+    '174.922079783971'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2007,
+    'AUCKLAND',
+    'SUBURB',
+    '36.961452591',
+    '174.930984885822'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2008,
+    'AUCKLAND',
+    'SUBURB',
+    '-36.968025181',
+    '174.923780041643'
+);
+
+INSERT INTO rlocations VALUES
+(
+    2009,
+    'AUCKLAND',
+    'RURAL',
+    '-36.976231881',
+    '174.910773009105'
+);
+
+SELECT * FROM rlocations;
+
+
+--------------------INSERT PROJECT-----------------------
+
+--------------------INSERT ROADS-----------------------
+
+--------------------INSERT CONTRACT-----------------------
+
+--------------------INSERT CONTRACT COMPANIES-------------
+
+--------------------INSERT EMPLOYEES-----------------------
+
+--------------------INSERT SUBSECTIONS-----------------------
+
+--------------------INSERT ROLE-----------------------
 
