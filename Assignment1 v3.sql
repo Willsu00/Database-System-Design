@@ -1,6 +1,4 @@
-
-----------------------CREATING TABLES----------------------
-
+-- CREATE TABLE rlocations
 CREATE TABLE rlocations (
     location_id_PK NUMBER(4) NOT NULL,
     location_name VARCHAR2(50) NOT NULL,
@@ -10,48 +8,60 @@ CREATE TABLE rlocations (
     CONSTRAINT location_id_primary PRIMARY KEY (location_id_PK)
 );
 
-DESC rlocations;
-
+-- CREATE TABLE contractor_companies
 CREATE TABLE contractor_companies (
     cc_name_PK VARCHAR2(50) NOT NULL,
     cc_street_name VARCHAR2(50),
     cc_street_no NUMBER(4),
     cc_city VARCHAR2(50),
-    CONSTRAINT cc_name_primary PRIMARY KEY(cc_name_PK)
+    CONSTRAINT cc_name_primary PRIMARY KEY (cc_name_PK)
 );
 
-DESC contractor_companies;
+-- CREATE TABLE roads
+CREATE TABLE roads (
+    road_name_PK VARCHAR2(50) NOT NULL,
+    location_id_FK NUMBER(4) NOT NULL,
+    road_desc VARCHAR2(50),
+    road_category VARCHAR2(50),
+    CONSTRAINT road_name_primary PRIMARY KEY (road_name_PK),
+    CONSTRAINT road_location_id_foreign FOREIGN KEY (location_id_FK) REFERENCES rlocations (location_id_PK)
+);
 
+-- CREATE TABLE subsections
+CREATE TABLE subsections (
+    road_name_subsection_FK VARCHAR2(50) NOT NULL,
+    CONSTRAINT road_name_sub_foreign FOREIGN KEY (road_name_subsection_FK) REFERENCES roads (road_name_PK)
+);
+
+-- CREATE TABLE contracts
 CREATE TABLE contracts (
-    contract_number_PK NUMBER(4)NOT NULL,
+    contract_number_PK NUMBER(4) NOT NULL,
     cc_name_FK VARCHAR2(50),
     contract_name VARCHAR2(50) NOT NULL,
-    contract_desc VARCHAR(50),
+    contract_desc VARCHAR2(50),
     contract_est_cost NUMBER(38),
     contract_actual_cost NUMBER(38),
     contract_start_date DATE,
     contract_end_date DATE,
-    CONSTRAINT contract_number_primary PRIMARY KEY(contract_number_PK),
-    CONSTRAINT contract_cc_name FOREIGN KEY (cc_name_FK)
-        REFERENCES contractor_companies (cc_name_PK)
+    CONSTRAINT contract_number_primary PRIMARY KEY (contract_number_PK),
+    CONSTRAINT contract_cc_name FOREIGN KEY (cc_name_FK) REFERENCES contractor_companies (cc_name_PK)
 );
 
-
+-- CREATE TABLE projects
 CREATE TABLE projects (
     project_code_PK NUMBER(4) NOT NULL,
     contract_number_FK NUMBER(4),
     road_name_fk VARCHAR2(50),
-    project_name VARCHAR(50) NOT NULL,
-    project_desc VARCHAR(50),
+    project_name VARCHAR2(50) NOT NULL,
+    project_desc VARCHAR2(50),
     project_start_date DATE,
     project_end_date DATE,
-    CONSTRAINT project_code_primary PRIMARY KEY(project_code_PK),
-    CONSTRAINT contract_number_foreign FOREIGN KEY(contract_number_FK)
-        REFERENCES contracts (contract_number_PK),
-    CONSTRAINT project_road_name_foreign FOREIGN KEY (road_name_fk)
-    REFERENCES roads (road_name_PK)
+    CONSTRAINT project_code_primary PRIMARY KEY (project_code_PK),
+    CONSTRAINT contract_number_foreign FOREIGN KEY (contract_number_FK) REFERENCES contracts (contract_number_PK),
+    CONSTRAINT project_road_name_foreign FOREIGN KEY (road_name_fk) REFERENCES roads (road_name_PK)
 );
 
+-- CREATE TABLE staff
 CREATE TABLE staff (
     employee_id_PK NUMBER(4) NOT NULL,
     project_code_FK NUMBER(4) NOT NULL,
@@ -67,48 +77,22 @@ CREATE TABLE staff (
     employee_phone VARCHAR2(20),
     employee_email VARCHAR2(50),
     CONSTRAINT employee_id_primary PRIMARY KEY (employee_id_PK),
-    CONSTRAINT project_code_foreign FOREIGN KEY (project_code_FK)
-        REFERENCES projects (project_code_PK),
-    CONSTRAINT cc_name_project_foreign FOREIGN KEY (cc_name_FK)
-        REFERENCES contractor_companies (cc_name_PK)
+    CONSTRAINT project_code_foreign FOREIGN KEY (project_code_FK) REFERENCES projects (project_code_PK),
+    CONSTRAINT cc_name_project_foreign FOREIGN KEY (cc_name_FK) REFERENCES contractor_companies (cc_name_PK)
 );
 
+-- CREATE TABLE staff_roles
 CREATE TABLE staff_roles (
     role_name VARCHAR2(50) NULL,
     employee_id_PK_FK NUMBER(4) NOT NULL,
     role_desc VARCHAR2(50),
     role_start_date DATE,
     role_end_date DATE,
-    CONSTRAINT staff_role_emp_id_primary PRIMARY KEY (EMPLOYEE_ID_PK_FK),
-    CONSTRAINT employee_id_role_foreign FOREIGN KEY(employee_id_PK_FK)
-        REFERENCES staff (employee_id_PK)
+    CONSTRAINT staff_role_emp_id_primary PRIMARY KEY (employee_id_PK_FK),
+    CONSTRAINT employee_id_role_foreign FOREIGN KEY (employee_id_PK_FK) REFERENCES staff (employee_id_PK)
 );
 
-
-CREATE TABLE roads (
-    road_name_PK VARCHAR2(50) NOT NULL,
-    location_id_FK NUMBER(4) NOT NULL,
-    road_desc VARCHAR2(50),
-    road_category VARCHAR2(50),
-    CONSTRAINT road_name_primary PRIMARY KEY(road_name_PK),
-    CONSTRAINT road_location_id_foreign FOREIGN KEY (location_id_FK)
-        REFERENCES rlocations (location_id_PK)
-);
-
-
-CREATE TABLE subsections (
-    road_name_subsection_FK VARCHAR2(50) NOT NULL,
-    CONSTRAINT road_name_sub_foreign FOREIGN KEY (road_name_subsection_FK)
-        REFERENCES roads (road_name_PK)
-);
-
-
-
-
---------------------INSERT TABLES--------------------
-
-------------------INSERT LOCATIONS-------------------
-
+--Inserts data into Locations
 INSERT INTO rlocations VALUES
 (
     2000,
@@ -208,115 +192,77 @@ INSERT INTO rlocations VALUES
     '174.910773009105'
 );
 
-SELECT * FROM rlocations;
+-------------------INSERT CONTRACT COMPANIES-------------
 
-COMMIT;
-
---------------------INSERT PROJECT-----------------------
-
-
-INSERT INTO projects VALUES (
-    1000,
-    0100,
-    'Stan Resurf',
-    'Road resurfacing',
-    'Stancombe Road',
-    '01-SEPTEMBER-2023',
-    '10-NOVEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'John Smith Ltd',
+    'Churchill Close',
+    54,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1001,
-    0101,
-    'Ormi PotHole',
-    'Pothole Repairs',
-    'Ormiston Road',
-    '05-SEPTEMBER-2023',
-    '17-NOVEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Swamy Development',
+    'Junction Road',
+    12,
+    'AUCKLAND'
 );
 
-
-INSERT INTO projects VALUES (
-    1002,
-    0102,
-    'Solj Markings',
-    'Line Road Markings',
-    'Soljans Place',
-    '07-SEPTEMBER-2023',
-    '21-NOVEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Enriquez Asphalt Plus',
+    'Sycamore Drive',
+    13,
+    'AUCKLAND'
 );
 
-
-INSERT INTO projects VALUES (
-    1003,
-    0103,
-    'Mich PotHole',
-    'Pothole Repairs',
-    'Michael Jones Drive',
-    '08-SEPTEMBER-2023',
-    '27-NOVEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Astrova',
+    'Manor Drive',
+    44,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1004,
-    0104,
-    'Chat Resurf',
-    'Road resurfacing',
-    'Chateau Rise',
-    '20-SEPTEMBER-2023',
-    '06-DECEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Shek Men Co',
+    'Greenfield Road',
+    5,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1005,
-    0105,
-    'Mala Markings',
-    'Line Road Markings',
-    'Malahide Drive',
-    '25-SEPTEMBER-2023',
-    '08-DECEMBER-2023'  
+INSERT INTO contractor_companies VALUES (
+    'Impass',
+    'Darnell Road',
+    69,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1006,
-    0106,
-    'Grac PotHole',
-    'Pothole Repairs',
-    'Gracechurch Road',
-    '25-SEPTEMBER-2023',
-    '08-DECEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Terraway',
+    'Queens Street',
+    4,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1007,
-    0107,
-    'Jeff Resurf',
-    'Road resurfacing',
-    'Jeffs Road',
-    '11-OCTOBER-2023',
-    '12-DECEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Vidroad',
+    'This Road',
+    56,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1008,
-    0108,
-    'Lemo PotHole',
-    'Pothole Repairs',
-    'Lemon Tree Lane',
-    '12-OCTOBER-2023',
-    '13-DECEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Binaryroute',
+    'Whythead Cresent',
+    8,
+    'AUCKLAND'
 );
 
-INSERT INTO projects VALUES (
-    1009,
-    0109,
-    'Cast Markings',
-    'Line Road Markings',
-    'Castlebane Drive',
-    '01-NOVEMBER-2023',
-    '19-DECEMBER-2023'
+INSERT INTO contractor_companies VALUES (
+    'Has Wells Ltd',
+    'Grove Lane',
+    23,
+    'AUCKLAND'
 );
-
 
 --------------------INSERT ROADS-----------------------
 
@@ -390,6 +336,15 @@ INSERT INTO roads VALUES (
     'Local Road'
 );
 
+--------------------INSERT SUBSECTIONS-----------------------
+
+INSERT INTO subsections VALUES (
+    'Michael Jones Drive'
+);
+
+INSERT INTO subsections VALUES (
+    'Jeffs Road'
+);
 
 --------------------INSERT CONTRACT-----------------------
 
@@ -506,77 +461,111 @@ INSERT INTO contracts VALUES(
     '20-DECEMBER-2023'
 );
 
--------------------INSERT CONTRACT COMPANIES-------------
+--------------------INSERT PROJECT-----------------------
 
-INSERT INTO contractor_companies VALUES (
-    'John Smith Ltd',
-    'Churchill Close',
-    54,
-    'AUCKLAND'
+
+INSERT INTO projects VALUES (
+    1000,
+    0100,
+    'Stancombe Road',
+    'Stan Resurf',
+    'Road resurfacing',
+    '01-SEPTEMBER-2023',
+    '10-NOVEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Swamy Development',
-    'Junction Road',
-    12,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1001,
+    0101,
+    'Ormiston Road',
+    'Ormi PotHole',
+    'Pothole Repairs',
+    '05-SEPTEMBER-2023',
+    '17-NOVEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Enriquez Asphalt Plus',
-    'Sycamore Drive',
-    13,
-    'AUCKLAND'
+
+INSERT INTO projects VALUES (
+    1002,
+    0102,
+    'Soljans Place',
+    'Solj Markings',
+    'Line Road Markings',
+    '07-SEPTEMBER-2023',
+    '21-NOVEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Astrova',
-    'Manor Drive',
-    44,
-    'AUCKLAND'
+
+INSERT INTO projects VALUES (
+    1003,
+    0103,
+    'Michael Jones Drive',
+    'Mich PotHole',
+    'Pothole Repairs',
+    '08-SEPTEMBER-2023',
+    '27-NOVEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Shek Men Co',
-    'Greenfield Road',
-    5,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1004,
+    0104,
+    'Chateau Rise',
+    'Chat Resurf',
+    'Road resurfacing',
+    '20-SEPTEMBER-2023',
+    '06-DECEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Impass',
-    'Darnell Road',
-    69,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1005,
+    0105,
+    'Malahide Drive',
+    'Mala Markings',
+    'Line Road Markings',
+    '25-SEPTEMBER-2023',
+    '08-DECEMBER-2023'  
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Terraway',
-    'Queens Street',
-    4,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1006,
+    0106,
+    'Gracechurch Road',
+    'Grac PotHole',
+    'Pothole Repairs',
+    '25-SEPTEMBER-2023',
+    '08-DECEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Vidroad',
-    'This Road',
-    56,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1007,
+    0107,
+    'Jeffs Road',
+    'Jeff Resurf',
+    'Road resurfacing',
+    '11-OCTOBER-2023',
+    '12-DECEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Binaryroute',
-    'Whythead Cresent',
-    8,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1008,
+    0108,
+    'Lemon Tree Lane',
+    'Lemo PotHole',
+    'Pothole Repairs',
+    '12-OCTOBER-2023',
+    '13-DECEMBER-2023'
 );
 
-INSERT INTO contractor_companies VALUES (
-    'Has Wells Ltd',
-    'Grove Lane',
-    23,
-    'AUCKLAND'
+INSERT INTO projects VALUES (
+    1009,
+    0109,
+    'Castlebane Drive',
+    'Cast Markings',
+    'Line Road Markings',
+    '01-NOVEMBER-2023',
+    '19-DECEMBER-2023'
 );
+
 ------------------INSERT STAFF-----------------------
 
 INSERT INTO staff VALUES (
@@ -739,21 +728,11 @@ INSERT INTO staff VALUES (
     'DRawlings'
 );
 
---------------------INSERT SUBSECTIONS-----------------------
-
-INSERT INTO subsections VALUES (
-    'Michael Jones Drive'
-);
-
-INSERT INTO subsections VALUES (
-    'Jeffs Road'
-);
-
 --------------------INSERT ROLE-----------------------
 
 INSERT INTO staff_roles VALUES (
     'MGR',
-    '1',
+    '0001',
     'Manager',
     '02-AUGUST-2016',
     '23-JUNE-2022'
@@ -761,7 +740,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'WRK',
-    '2',
+    '0002',
     'Worker',
     '17-APRIL-2017',
     '20-APRIL-2020'
@@ -769,7 +748,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'WRK',
-    '3',
+    '0003',
     'Worker',
     '05-AUGUST-2019',
     NULL
@@ -777,7 +756,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'ENG',
-    '4',
+    '0004',
     'Engineer',
     '29-OCTOBER-2019',
     NULL
@@ -785,7 +764,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'WRK',
-    '5',
+    '0005',
     'Worker',
     '12-JUNE-2020',
     NULL
@@ -793,7 +772,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'MGR',
-    '6',
+    '0006',
     'Manager',
     '16-MARCH-2021',
     NULL
@@ -801,7 +780,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'WRK',
-    '7',
+    '0007',
     'Worker',
     '12-JANUARY-2021',
     NULL
@@ -809,7 +788,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'ENG',
-    '8',
+    '0008',
     'Engineer',
     '07-OCTOBER-2021',
     NULL
@@ -817,7 +796,7 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'MGR',
-    '9',
+    '0009',
     'Manager',
     '07-AUGUST-2022',
     NULL
@@ -825,12 +804,70 @@ INSERT INTO staff_roles VALUES (
 
 INSERT INTO staff_roles VALUES (
     'ENG',
-    '10',
+    '0010',
     'Engineer',
     '12-APRIL-2022',
     NULL
 );
 
-commit;
+--SQL QUERIES
+--This shows employee full name and the project they are working on with start and end date
+SELECT s.employee_fName || ' ' || s.employee_lname AS "Employee Name", 
+        'Project Code: ' || p.project_code_pk || ' Start Date: ' || p.project_start_date || ' End Date: ' || p.project_end_date AS "Project Info"
+FROM staff s, projects p
+WHERE s.project_code_fk = p.project_code_pk;
 
-SELECT * FROM Contracts;
+--This shows the project dates and the location info for the projects.
+SELECT
+    P.Project_Code_pk || ' - ' || P.Project_Start_Date || ' to ' || P.Project_End_Date AS "Project Info",
+    L.Location_Name || ' (' || L.Location_Desc || ') - ' || 'Lat: ' || L.Location_Latitude || ', Lon: ' || L.Location_Longitude AS "Location Info",
+    R.Road_Name_pk || ' (' || R.Road_Desc || ') - ' || R.Road_Category AS "Road Info"
+FROM Projects P, RLocations L, Roads R
+WHERE R.Road_Name_pk = P.Road_Name_fk
+AND L.Location_ID_PK = R.Location_ID_FK;
+
+--This Orders the project and location information and road category by the project start date.
+SELECT
+    P.Road_Name_Fk,
+    P.Project_Start_Date,
+    P.Project_End_Date,
+    L.Location_Name,
+    R.Road_Category
+FROM Projects P, RLocations L, Roads R
+  WHERE L.Location_ID_PK = R.Location_ID_FK
+  AND R.Road_Name_pk = P.Road_Name_Fk
+  AND P.Project_Start_Date >= '01/09/2023' 
+  AND R.Road_Category = 'Local Road'
+ORDER BY P.Project_Start_Date;
+
+--This displays the Contract information and the Contractor Company information and orders it by Contract Actual Cost
+SELECT
+    C.Contract_Name,
+    C.Contract_Number_pk,
+    C.Contract_Desc,
+    C.Contract_Actual_Cost,
+    C.Contract_start_date,
+    C.Contract_end_date,
+    CC.CC_Name_pk,
+    CC.CC_Street_Name,
+    CC.CC_Street_No,
+    CC.CC_City
+FROM Contracts C, Contractor_Companies CC
+WHERE C.CC_Name_fk = CC.CC_Name_PK
+ORDER BY C.Contract_Actual_Cost ASC;
+
+--This displays the employee information and there role as a staff member and sorts it by firstnames.
+SELECT
+    S.Employee_FName,
+    S.Employee_LName,
+    S.Employee_Employment_Date,
+    S.Employee_Email,
+    R.Role_Name,
+    R.Employee_ID_pk_fk,
+    R.Role_Desc,
+    R.Role_Start_Date,
+    R.Role_End_Date
+FROM Staff S, Staff_Roles R
+WHERE S.Employee_ID_Pk = R.Employee_ID_PK_FK
+ORDER BY S.Employee_FName ASC;
+
