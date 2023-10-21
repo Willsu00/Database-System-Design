@@ -871,3 +871,4 @@ FROM Staff S, Staff_Roles R
 WHERE S.Employee_ID_Pk = R.Employee_ID_PK_FK
 ORDER BY S.Employee_FName ASC;
 
+COMMIT;
